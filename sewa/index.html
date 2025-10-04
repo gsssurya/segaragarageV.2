@@ -16,38 +16,38 @@
 </head>
 <body>
     <section class="pilih-garasi">
-        <div class="pilih-garasi-container">
+        <form class="pilih-garasi-container">
             <span class="segaragarage-icon"></span>
             <h1>Masukkan nomor telepon Anda.</h1>
             <div class="inpt-form">
                 <p>+62</p>
-                <input type="number" name="telepon" placeholder="" id="telepon" required>
-                <label for="telepon">Nomor telepon</label>
+                <input class="js-nomor-telepon" type="number" inputmode="numeric" name="telepon" placeholder="" id="telepon" required>
+                <label class="label-nomor-telepon" for="telepon">Nomor telepon</label>
             </div>
 
             <div class="inpt-form register">
-                <input type="text" name="nama" placeholder="" id="nama" required>
+                <input type="text" name="nama" placeholder="" id="nama" autocomplete="off">
                 <label for="nama">Nama panggilan</label>
             </div>
 
             <div class="inpt-form register">
-                <input type="text" name="email" placeholder="" id="email" required>
-                <label for="email">Email</label>
+                <input type="text" name="email" placeholder="" id="email" autocomplete="off">
+                <label class="js-email-alert" for="email">Email</label>
             </div>
 
             <div class="inpt-form register">
-                <input type="text" name="alamat" placeholder="" id="alamat" required>
+                <input type="text" name="alamat" placeholder="" id="alamat" autocomplete="new-password">
                 <label for="alamat">Alamat</label>
             </div>
 
-            <p class="keterangan secondary">
+            <p class="keterangan secondary js-form-keterangan">
                 Kami menggunakan nomor telepon Anda untuk keperluan <i>penyimpanan</i> dan <i>pengelolaan</i> data penyewaan garasi.
             </p>
             <button class="js-lanjutkan-denah">
                 Lanjutkan
             </button>
-        </div>
+        </form>
     </section>
-    <script src="../script.js"></script>
+    <script src="../script.js" type="module"></script>
 </body>
 </html>

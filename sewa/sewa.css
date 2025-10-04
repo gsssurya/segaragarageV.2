@@ -281,6 +281,9 @@ input[type=number] {
     width: 100%;
     font-weight: 400;
 }
+.register{
+    display: none;
+}
 .register label{
     position: absolute;
     left: 29px;
@@ -594,7 +597,42 @@ span.plus-icon path, span.trash-icon path{
 }
 /*Konfirmasi style*/
 
-
+/*Otp style*/
+.otp-container{
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 100%;
+}
+.otp-container div{
+    height: 56px;
+    flex: 1;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+}
+.otp-container div input{
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+    border: none;
+    color: var(--font-color);
+    background-color: transparent;
+    height: 100%;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    transition: all 0.15s;
+}
+.otp-container div input:focus, .otp-container div input:valid{
+    outline: 2px solid var(--yellow-color);
+    background-color: var(--primary-color);
+    transition: outline 0.15s;
+}
+.js-menit-count.ulangi{
+    cursor: pointer;
+    text-decoration: underline;
+}
+/*Otp style*/
 @media (max-width: 550px){
     .pilih-garasi{
         padding: 14px 0;

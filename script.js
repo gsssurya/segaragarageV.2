@@ -1,3 +1,8 @@
+import { dataSewa } from "./data/data-sewa.js";
+import { garasi } from "./data/garasi.js";
+import { user } from "./data/user.js";
+import { paketSewa } from "./data/paket.js";
+
 const logoSegaragarage = `<svg width="47" height="46" viewBox="0 0 47 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <rect x="0.842285" y="0.592224" width="45.3156" height="45.3156" fill="url(#pattern0_207_4)"/>
         <defs>
@@ -280,6 +285,7 @@ showImgFromDotNav('hero3', -200)
 
 //Show hide menu
 if(document.querySelector('.js-hamburger-icon')){
+    localStorage.removeItem('data-telepon');
     document.querySelector('.js-hamburger-icon').addEventListener('click', () => {
         window.removeEventListener("scroll", windowScroll);
         if(document.querySelector('.close-menu')){
@@ -308,7 +314,6 @@ function preventDefault(e) {
 
 //Sewa action
 function directToMenu(element, id){
-     
     document.querySelector(`.${element}`).addEventListener('click', () => {
         if(window.innerWidth <= 1100){
             document.querySelector('.js-close-menu').click();
@@ -369,20 +374,6 @@ if(document.querySelector('header')){
     })
 }
 
-if(document.querySelector('.js-paket-harga-button')){
-    document.querySelectorAll('.js-paket-harga-button').forEach((element) => {
-        element.addEventListener('click', () => {
-            window.location.href = 'sewa'
-        })
-    })
-}
-
-if(document.querySelector('.js-lanjutkan-denah')){
-    document.querySelector('.js-lanjutkan-denah').addEventListener('click', () => {
-        window.location.href = 'denah.html';
-    })
-}
-
 if(document.querySelector('.js-lanjutkan-penawaran')){
     document.querySelector('.js-lanjutkan-penawaran').addEventListener('click', () => {
         window.location.href = 'penawaran.html';
@@ -433,3 +424,247 @@ const svgData = "data:image/svg+xml," + encodeURIComponent(logoSegaragarage);
 link.href = svgData;
 document.head.appendChild(link);
 //Logo di title
+
+
+
+
+//Data script
+console.log(dataSewa)
+if(document.querySelector('.js-paket-harga-button')){
+    document.querySelectorAll('.js-paket-harga-button').forEach((element) => {
+        element.addEventListener('click', () => {
+            const idPaket = element.dataset.paket;
+            localStorage.setItem('idPaket', idPaket);
+            window.location.href = 'sewa'
+        })
+    })
+}
+
+function getDomain(email) {
+  return email.substring(email.indexOf('@'));
+}
+
+function hitung() {
+    let inptTelepon = document.getElementById('telepon').value;
+    if(inptTelepon.startsWith("0")){
+        inptTelepon = inptTelepon;
+    } else {
+        inptTelepon = `0${inptTelepon}`;
+    }
+  let phone = inptTelepon;
+  let digits = phone.replace(/\D/g, "");
+  return digits.length;
+}
+
+//Nomor telepon
+function hilangkanNolTelepon(){
+    let s = String(dataSewa.nomor_telepon || '');
+    if (s.startsWith('0')) {
+        return dataSewa.nomor_telepon = s.slice(1);
+    }
+}
+function formatDenganStrip(nomor) {
+  return String(nomor).replace(/(\d{4})(?=\d)/g, '$1-');
+}
+if(document.querySelector('.js-lanjutkan-denah')){
+    let nomorTeleponTidakDitemukan = false || localStorage.getItem('data-telepon')
+    if(nomorTeleponTidakDitemukan){
+        let alertTime;
+        document.querySelector('.js-nomor-telepon').type = 'text';
+        document.querySelector('.js-nomor-telepon').value = formatDenganStrip(hilangkanNolTelepon());
+        console.log('data kosong')
+        document.querySelector('.js-nomor-telepon').style.pointerEvents = 'none';
+        document.querySelectorAll('.register input').forEach((input) => {
+            input.required = true;
+        })
+        document.querySelectorAll('.register').forEach((element) => {
+            element.style.display = 'flex';
+        })
+        document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
+        document.querySelector('.js-form-keterangan').innerHTML = 'Dengan mengisi formulir ini, saya setuju data yang diberikan dipakai untuk <i>pengelolaan</i> penyewaan garasi.'
+        const inputs = document.querySelectorAll("input");
+        inputs.forEach((element, index) => {
+            element.addEventListener('keydown', () => {
+                if(inputs[3].value && inputs[0].value && inputs[1].value && inputs[2].value){
+                   document.querySelector('.js-lanjutkan-denah').type = 'button';
+                } else {
+                    document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
+                }
+            })
+        })
+
+        document.querySelector('.js-lanjutkan-denah').addEventListener('click', () =>{
+            if(inputs[3].value && inputs[0].value && inputs[1].value && inputs[2].value){
+                //Email valid checker
+                const emailElement = document.getElementById('email');
+                 if(getDomain(emailElement.value) === '@gmail.com'){
+
+
+
+                    const dataUser = {
+                        nomor_telepon: dataSewa.nomor_telepon,
+                        nama_panggilan: document.getElementById('nama').value,
+                        email: emailElement.value,
+                        alamat: document.getElementById('alamat').value
+                    }
+
+
+                    console.log(dataUser)
+                    setTimeout(() => {
+                        window.location.href = 'denah.html'
+                    }, 500)
+                 } else {
+                    document.querySelector('.js-email-alert').innerHTML = 'Email tidak valid (contoh@gmail.com)'
+                    document.querySelector('.js-email-alert').style.color = 'red';
+                    clearTimeout(alertTime);
+                    alertTime = setTimeout(() => {
+                        document.querySelector('.js-email-alert').innerHTML = 'Nomor telepon';
+                        document.querySelector('.js-email-alert').style.color = '';
+                        alertTime = null;
+                    }, 5000)
+                 }
+                //Email valid checker
+            }
+        })
+    } else {
+        let alertTime;
+        document.querySelector('.js-lanjutkan-denah').addEventListener('click', () => {
+            if(localStorage.getItem('data-telepon')){
+                localStorage.removeItem('data-telepon');
+            }
+            if(document.getElementById('telepon').value){
+                document.querySelector('.js-lanjutkan-denah').type = 'button';
+            } else {
+                document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
+            }
+            if((hitung() < 9 && hitung() > 1) || hitung() > 15 || document.getElementById('telepon').value === '0'){
+                document.querySelector('.label-nomor-telepon').innerHTML = 'Nomor tidak valid (9-15 digit)';
+                document.querySelector('.label-nomor-telepon').style.color = 'red';
+                clearTimeout(alertTime);
+                alertTime = setTimeout(() => {
+                    document.querySelector('.label-nomor-telepon').innerHTML = 'Nomor telepon';
+                    document.querySelector('.label-nomor-telepon').style.color = '';
+                    alertTime = null;
+                }, 5000)
+                
+            } else if(hitung() > 1 && hitung() >= 9 && hitung() <= 15){
+                let inptTelepon = document.getElementById('telepon').value;
+                if(inptTelepon.startsWith("0")){
+                    inptTelepon = inptTelepon;
+                } else {
+                    inptTelepon = `0${inptTelepon}`;
+                }
+                if(inptTelepon === dataSewa.nomor_telepon){
+                    window.location.href = 'otp.html';
+                } else {
+                    localStorage.setItem('nomor_telepon', inptTelepon);
+                    window.location.href = 'otp.html';
+                }
+            }
+        })
+    }
+}
+//Nomor telepon
+
+console.log(localStorage.getItem('otp'))
+//OTP Script
+if(document.querySelector('.pilih-garasi-container.otp')){
+   const inputs = document.querySelectorAll('.otp-digit');
+    inputs.forEach((element, index) => {
+    element.addEventListener('input', () => {
+        if (element.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        } else if(inputs[3].value && inputs[0].value && inputs[1].value && inputs[2].value){
+            document.querySelector('.js-lanjutkan-otp').type = 'button';
+            document.querySelector('.js-lanjutkan-otp').addEventListener('click', () => {
+                let otpCode = '';
+                for(let i = 0; i < inputs.length; i++){
+                    otpCode += inputs[i].value;
+                }
+                console.log(otpCode)
+                if(otpCode === localStorage.getItem('otp')){
+                   checkNumber(dataSewa.nomor_telepon);
+                } else {
+                    document.querySelectorAll('.otp-digit').forEach((element) => {
+                        element.style.outline = '2px solid red';
+                        setTimeout(() => {
+                            element.value = '';
+                            element.style.outline = '';
+                            inputs[0].focus();
+                        }, 1500)
+                    })
+                }
+            })
+            document.querySelector('.js-lanjutkan-otp').click();
+        }
+    });
+    element.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && element.value === '' && index > 0) {
+            inputs[index - 1].focus();
+        }
+    });
+    });
+
+    function count60s(detik){
+        const counting = setInterval(() => {
+            if(detik > 0){
+                document.querySelector('.js-menit-count').innerHTML = `${detik}s`
+                detik--
+            } else {
+                document.querySelector('.js-menit-count').innerHTML = `Kirim ulang!`;
+                document.querySelector('.js-menit-count').classList.add('ulangi')
+                document.querySelector('.ulangi').addEventListener('click', () => {
+                    count60s(120)
+                    document.querySelector('.js-menit-count').innerHTML = `120s`
+                    document.querySelector('.js-menit-count').classList.remove('ulangi')
+                })
+                clearInterval(counting);
+            }
+        }, 1000)
+    }
+    
+    if(!localStorage.getItem('otp')){
+        count60s(120);
+        localStorage.setItem('otp', generateOTP());
+    } else {
+        document.querySelector('.js-menit-count').innerHTML = `Kirim ulang!`;
+        document.querySelector('.js-menit-count').classList.add('ulangi')
+        document.querySelector('.ulangi').addEventListener('click', () => {
+            localStorage.setItem('otp', generateOTP());
+            count60s(120)
+            console.log(localStorage.getItem('otp'))
+            document.querySelector('.js-menit-count').innerHTML = `120s`
+            document.querySelector('.js-menit-count').classList.remove('ulangi')
+        })
+    }
+    console.log(localStorage.getItem('otp'))
+    
+    function checkNumber(inptTelepon){
+        localStorage.removeItem('otp');
+        for (let i = 0; i < user.length; i++){
+            if(user[i].nomor_telepon === inptTelepon){
+                console.log('data-ditemukan')
+                setTimeout(() => {
+                    window.location.href = 'denah.html';
+                }, 500)
+                return;
+            } else if(i === user.length - 1 && user[i].nomor_telepon !== inptTelepon){
+                console.log('data-tidak-ditemukan')
+                localStorage.setItem('data-telepon', true)
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500)
+            }
+        }
+    }
+
+}
+function generateOTP() {
+        let otp = Math.floor(1000 + Math.random() * 9000); 
+        return otp.toString(); 
+    }
+//OTP Script
+
+//Data script
+
+
