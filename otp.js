@@ -6,6 +6,11 @@ import { goToDenah } from "./user-data.js";
 
 if(document.querySelector('.pilih-garasi-container.otp')){
 
+
+    if(!localStorage.getItem('nomor_telepon')){
+        window.location.href = 'index.html';
+    }
+
     goToDenah();
 
     //Melanjutkan hitungan untuk kirim ulang OTP

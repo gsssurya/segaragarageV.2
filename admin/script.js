@@ -1,14 +1,5 @@
-import { dataSewa } from "./data/data-sewa.js";
-import { garasi } from "./data/garasi.js";
-import { user } from "./data/user.js";
-import { riwayatSewa } from "./data/riwayat-sewa.js";
-import { paketSewa } from "./data/paket.js";
-import { checkNumber, } from "./otp.js";
-import { garasiSummon } from "./denah.js";
-import { summonKoleksiGarasi } from "./koleksi.js";
-import { coutCareQtyFromPaket } from "./penawaran.js";
-import { sendKonfirmasi, insertDataSewa } from "./fetch.js";
-import { updateDataSewa } from "./data/data-sewa.js";
+summonGarasi();
+
 
 const logoSegaragarage = `<svg width="47" height="46" viewBox="0 0 47 46" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <rect x="0.842285" y="0.592224" width="45.3156" height="45.3156" fill="url(#pattern0_207_4)"/>
@@ -21,91 +12,56 @@ const logoSegaragarage = `<svg width="47" height="46" viewBox="0 0 47 46" fill="
         </svg>
     `;
 
+const link = document.createElement("link");
+link.rel = "icon";
+link.type = "image/svg+xml";
+const svgData = "data:image/svg+xml," + encodeURIComponent(logoSegaragarage);
+link.href = svgData;
+document.head.appendChild(link);
+
 document.querySelectorAll('.segaragarage-icon').forEach((element) => {
     element.innerHTML = logoSegaragarage;
 })
 
-document.querySelectorAll('.whatsapp-icon').forEach((element) => {
-    element.innerHTML = `<svg width="33" height="33" viewBox="0 0 33 33"    fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M16.5237 0C12.1537 0 7.96285 1.73162 4.87309 4.8141C1.78296 7.89621 0.0470445 12.0767 0.0470445 16.4359C0.0659843 19.2985 0.834509 22.1067 2.27577 24.5821C2.25282 24.618 2.23424 24.6525 2.22987 24.6838C2.1807 25.0369 1.01225 29.1996 0.346806 31.4297C-0.0778863 32.8532 -0.0920913 33 0.193101 33C0.309654 33 2.24481 32.5168 4.4932 31.9267C7.13495 31.2331 8.0805 30.9813 8.66508 30.8335C11.073 32.156 13.7745 32.8568 16.5237 32.8717C20.8934 32.8717 25.0842 31.1401 28.1743 28.0576C31.2641 24.9755 33 20.7951 33 16.4359C33 14.2777 32.5739 12.1402 31.746 10.1463C30.9177 8.15199 29.7041 6.34044 28.1743 4.8141C26.6442 3.28776 24.8278 2.07715 22.8289 1.2513C20.83 0.425094 18.6872 0 16.5237 0ZM16.5237 2.34892C18.378 2.34892 20.2144 2.71333 21.9278 3.4211C23.6411 4.12922 25.1978 5.16689 26.5091 6.47487C27.8207 7.78285 28.8609 9.33608 29.5704 11.0452C30.2803 12.7543 30.6456 14.5858 30.6456 16.4359C30.6456 20.172 29.1574 23.7551 26.5091 26.3969C23.8607 29.0386 20.2687 30.5228 16.5237 30.5228C13.7239 30.5116 10.9911 29.6705 8.67164 28.1067L5.74105 28.8472C5.73522 28.8482 5.72648 28.8504 5.72101 28.8519C5.10692 28.9921 3.91808 29.2795 3.86927 29.2308C3.82046 29.1821 3.97016 28.5223 4.25499 27.3205L4.96997 24.5058C3.30435 22.1423 2.40798 19.3251 2.40179 16.4359C2.40179 12.6998 3.88967 9.11663 6.53798 6.47487C9.1863 3.83311 12.7783 2.34892 16.5237 2.34892ZM11.061 8.62941C10.5551 8.65557 9.98942 8.88482 9.55599 9.27831C8.54635 10.1943 8.18758 11.0368 8.18139 12.5043C8.17265 14.5676 9.33235 16.6887 11.9646 19.4239C14.181 21.727 15.8517 22.8047 18.7167 23.778C20.3084 24.319 20.8406 24.3619 22.0822 24.0501C22.6253 23.9135 23.2751 23.5349 23.8189 23.0379C24.5797 22.3425 24.7018 22.1187 24.8023 21.2376L24.8649 20.6861C24.8799 20.4903 24.6981 20.1487 24.4333 19.9972L23.117 19.3581C22.127 18.8774 21.1345 18.4843 20.9112 18.4843C20.5015 18.4843 20.139 18.8128 19.5352 19.7323C18.9291 20.6548 18.6548 20.6668 17.0059 19.8417C15.3094 18.9926 13.4682 17.3122 12.7073 15.9185L12.3915 15.3404C12.3187 15.2046 12.3281 14.9644 12.4075 14.8525L12.9488 14.1458C13.3371 13.6382 13.6547 13.078 13.6547 12.9C13.6547 12.4309 12.1497 8.98983 11.8659 8.80998C11.6467 8.67119 11.3644 8.61378 11.061 8.62941Z" fill="#0F0F0F"/>
-    </svg>
-    `;
-})
-document.querySelectorAll('.email-icon').forEach((element) => {
-    element.innerHTML = `<svg width="33" height="21" viewBox="0 0 33 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.51367 0H31.4949C30.7092 0.689931 29.9914 1.32344 29.2701 1.95556C25.0999 5.61731 20.9296 9.27558 16.7643 12.9426C16.571 13.1125 16.4588 13.1602 16.2359 12.9638C11.3677 8.68003 6.48912 4.40427 1.61432 0.12712C1.58785 0.104134 1.56974 0.0727892 1.51367 0Z" fill="#0F0F0F"/>
-<path d="M31.4056 20.6422H1.47559C1.76256 20.3848 1.99208 20.1734 2.22647 19.9673C5.32576 17.2444 8.42993 14.5265 11.5226 11.7957C11.7702 11.5777 11.9186 11.5578 12.1746 11.7873C13.4897 12.9638 14.8298 14.1124 16.1435 15.2906C16.4058 15.5268 16.5527 15.5431 16.8251 15.299C18.1652 14.0961 19.5298 12.921 20.88 11.7278C21.058 11.5693 21.1688 11.5512 21.3617 11.7198C24.6491 14.6157 27.9434 17.5053 31.2356 20.3946C31.3067 20.4573 31.3857 20.5102 31.4603 20.5663C31.4418 20.591 31.4237 20.6175 31.4056 20.6422Z" fill="#0F0F0F"/>
-<path d="M32.9999 1.17508V19.5201C32.7457 19.3055 32.5329 19.1307 32.3264 18.9489C29.133 16.147 25.9432 13.3399 22.7446 10.5447C22.5318 10.3584 22.5336 10.2706 22.7446 10.086C25.3045 7.85323 27.8542 5.6107 30.407 3.36955C31.1565 2.71132 31.9039 2.0496 32.6548 1.39275C32.7506 1.30847 32.8247 1.18483 32.9999 1.17508Z" fill="#0F0F0F"/>
-<path d="M0 19.4755V1.12213C0.569429 1.61738 1.0894 2.06769 1.60763 2.5215C4.48055 5.04126 7.35068 7.5645 10.2253 10.0825C10.3939 10.2312 10.4963 10.3187 10.2633 10.5217C6.8819 13.4754 3.50852 16.4392 0.131996 19.4013C0.107269 19.4211 0.0727893 19.434 0 19.4755Z" fill="#0F0F0F"/>
-</svg>`;
-})
-
-document.querySelectorAll('.maps-icon').forEach((element) => {
-    element.innerHTML = `<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M31.0066 22.8562H31.0153C31.0153 22.8562 27.7464 27.6512 24.9978 31.2149C22.622 34.293 21.9283 36.9289 21.7289 38.2035C21.6509 38.6717 21.2694 39.0186 20.8098 39.0186C20.3503 39.0186 19.9687 38.6717 19.8907 38.2035C19.6913 36.9289 18.9976 34.293 16.6218 31.2149C16.2577 30.738 15.8848 30.2437 15.512 29.7408L24.4862 19.0758L31.709 10.509C32.5067 12.1825 32.9489 14.0554 32.9489 16.041C32.9489 18.5555 32.2292 20.888 31.0066 22.8562Z" fill="#48B564"/>
-<path d="M24.4863 19.0757L15.5121 29.7407C13.0669 26.4632 10.6044 22.8561 10.6044 22.8561H10.6131C10.353 22.4399 10.1189 22.015 9.91943 21.5728L17.1335 13.0061C16.4485 13.8298 16.041 14.8877 16.041 16.0409C16.041 18.6768 18.174 20.8098 20.8099 20.8098C22.2926 20.8098 23.6193 20.1335 24.4863 19.0757Z" fill="#FCC60E"/>
-<path d="M24.625 4.1099L17.1941 12.9368L11.5061 7.97707C13.7258 5.21976 17.0727 3.46826 20.8099 3.46826C22.1452 3.46826 23.4284 3.6937 24.625 4.1099Z" fill="#2C85EB"/>
-<path d="M17.1943 12.9367L17.1336 13.0061L9.91949 21.5728C9.12178 19.8994 8.6709 18.0265 8.6709 16.0409C8.6709 12.9714 9.73741 10.1534 11.5062 7.97705L17.1943 12.9367Z" fill="#ED5748"/>
-<path d="M24.4864 19.0756C25.1714 18.2519 25.5789 17.1941 25.5789 16.0409C25.5789 13.4049 23.4459 11.2719 20.81 11.2719C19.3273 11.2719 18.0006 11.9483 17.1335 13.0061L24.6251 4.10986C27.7379 5.1677 30.2871 7.50014 31.7091 10.5089L24.4864 19.0756Z" fill="#5695F6"/>
+document.querySelector('.garasi-icon').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 22V12H15V22" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-`;
-})
+`
 
-document.querySelectorAll('.icon-paket').forEach((element) => {
-    element.innerHTML = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+document.querySelector('.order-icon').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 12H16L14 15H10L8 12H2" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5.45 5.11L2 12V18C2 18.5304 2.21071 19.0391 2.58579 19.4142C2.96086 19.7893 3.46957 20 4 20H20C20.5304 20 21.0391 19.7893 21.4142 19.4142C21.7893 19.0391 22 18.5304 22 18V12L18.55 5.11C18.3844 4.77679 18.1292 4.49637 17.813 4.30028C17.4967 4.10419 17.1321 4.0002 16.76 4H7.24C6.86792 4.0002 6.50326 4.10419 6.18704 4.30028C5.87083 4.49637 5.61558 4.77679 5.45 5.11Z" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`
+
+document.querySelector('.pengguna-icon').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M23 20.9999V18.9999C22.9993 18.1136 22.7044 17.2527 22.1614 16.5522C21.6184 15.8517 20.8581 15.3515 20 15.1299" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16 3.12988C16.8604 3.35018 17.623 3.85058 18.1676 4.55219C18.7122 5.2538 19.0078 6.11671 19.0078 7.00488C19.0078 7.89305 18.7122 8.75596 18.1676 9.45757C17.623 10.1592 16.8604 10.6596 16 10.8799" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`
+
+document.querySelector('.riwayat-icon').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 8V21H3V8" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M23 3H1V8H23V3Z" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 12H14" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`
+
+const filterIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 3H2L10 12.46V19L14 21V12.46L22 3Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`
+
+const iconPaket = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M16 1C15.2044 1 14.4413 1.31607 13.8787 1.87868C13.3161 2.44129 13 3.20435 13 4V16C13 16.7956 13.3161 17.5587 13.8787 18.1213C14.4413 18.6839 15.2044 19 16 19C16.7956 19 17.5587 18.6839 18.1213 18.1213C18.6839 17.5587 19 16.7956 19 16C19 15.2044 18.6839 14.4413 18.1213 13.8787C17.5587 13.3161 16.7956 13 16 13H4C3.20435 13 2.44129 13.3161 1.87868 13.8787C1.31607 14.4413 1 15.2044 1 16C1 16.7956 1.31607 17.5587 1.87868 18.1213C2.44129 18.6839 3.20435 19 4 19C4.79565 19 5.55871 18.6839 6.12132 18.1213C6.68393 17.5587 7 16.7956 7 16V4C7 3.20435 6.68393 2.44129 6.12132 1.87868C5.55871 1.31607 4.79565 1 4 1C3.20435 1 2.44129 1.31607 1.87868 1.87868C1.31607 2.44129 1 3.20435 1 4C1 4.79565 1.31607 5.55871 1.87868 6.12132C2.44129 6.68393 3.20435 7 4 7H16C16.7956 7 17.5587 6.68393 18.1213 6.12132C18.6839 5.55871 19 4.79565 19 4C19 3.20435 18.6839 2.44129 18.1213 1.87868C17.5587 1.31607 16.7956 1 16 1Z" stroke="#4872FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
-})
 
-export function addcheckIcon(){
-    if(document.querySelector('.popup-berhasil span.check-icon')){
-        if(!JSON.parse(localStorage.getItem('isDarkModeOn'))){
-            document.querySelector('span.check-icon').innerHTML = `<svg width="101" height="82" viewBox="0 0 101 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="13.5" y="3.5" width="75" height="75" rx="37.5" stroke="black" stroke-width="5"/>
-                <path d="M94.6666 10L52.4999 52.1667L33.3333 33" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M94.3333 10L52.1667 52.1667L33 33" stroke="black" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-    `
-        } else {
-            document.querySelector('span.check-icon').innerHTML = `<svg width="101" height="82" viewBox="0 0 101 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="13.5" y="3.5" width="75" height="75" rx="37.5" stroke="#F5F5F5" stroke-width="5"/>
-                <path d="M94.6666 10L52.4999 52.1667L33.3333 33" stroke="#2D2D2D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M94.3333 10L52.1667 52.1667L33 33" stroke="#F5F5F5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                `
-    
-        }
-    }
-}
 
-if(document.querySelector('.facebook-icon')){
-    document.querySelector('.facebook-icon').innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2.04004C17.4998 2.04004 21.9997 6.52979 22 12.0596C22.0054 14.4452 21.158 16.7549 19.6104 18.5703C18.0626 20.3858 15.916 21.5878 13.5596 21.96V14.96H15.8896L16.3398 12.0596H13.5596V10.1797C13.5597 9.38981 13.9506 8.62012 15.1904 8.62012H16.4502V6.15039C16.4502 6.15039 15.3097 5.95996 14.2197 5.95996C11.93 5.96007 10.4406 7.33998 10.4404 9.84961V12.0596H7.90039V14.96H10.4404V21.96C5.66043 21.21 2 17.0596 2 12.0596C2.00025 6.52979 6.50016 2.04004 12 2.04004Z" fill="#909090"/>
-        </svg>
-    
-    `;
-}
-
-if(document.querySelector('.youtube-icon')){
-    document.querySelector('.youtube-icon').innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 5C16.19 5 18.8001 5.16043 19.8301 5.44043C20.7299 5.69044 21.3096 6.27009 21.5596 7.16992C21.6896 7.63992 21.7798 8.27031 21.8398 9.07031C21.9098 9.87019 21.9404 10.5602 21.9404 11.1602L22 12C22 14.19 21.8396 15.8001 21.5596 16.8301C21.3096 17.7299 20.7299 18.3096 19.8301 18.5596C19.3601 18.6896 18.4997 18.7798 17.1797 18.8398C15.8798 18.9098 14.6898 18.9404 13.5898 18.9404L12 19C7.81 19 5.19992 18.8396 4.16992 18.5596C3.27009 18.3096 2.69044 17.7299 2.44043 16.8301C2.31043 16.3601 2.22016 15.7297 2.16016 14.9297C2.09017 14.1298 2.05957 13.4398 2.05957 12.8398L2 12C2 9.81 2.16043 8.19992 2.44043 7.16992C2.69044 6.27009 3.27009 5.69044 4.16992 5.44043C4.63992 5.31043 5.50031 5.22016 6.82031 5.16016C8.12019 5.09017 9.31024 5.05957 10.4102 5.05957L12 5ZM10 15L15.1904 12L10 9V15Z" fill="#909090"/>
-        </svg>
-    `;
-
-}
-
-if(document.querySelector('.instagram-icon')){
-    document.querySelector('.instagram-icon').innerHTML = `<svg width="24"      height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16.2002 2C19.4 2.00011 21.9999 4.59996 22 7.7998V16.2002C21.9999 17.7384 21.3884 19.2131 20.3008 20.3008C19.2131 21.3884 17.7384 21.9999 16.2002 22H7.7998C4.59996 21.9999 2.00011 19.4 2 16.2002V7.7998C2.00005 6.26162 2.61155 4.78688 3.69922 3.69922C4.78688 2.61155 6.26162 2.00005 7.7998 2H16.2002ZM7.59961 4C6.64497 4.0001 5.72973 4.37965 5.05469 5.05469C4.37965 5.72973 4.0001 6.64497 4 7.59961V16.4004C4.00021 18.3901 5.60992 19.9998 7.59961 20H16.4004C17.355 19.9999 18.2703 19.6204 18.9453 18.9453C19.6204 18.2703 19.9999 17.355 20 16.4004V7.59961C19.9998 5.60992 18.3901 4.00021 16.4004 4H7.59961ZM12 7C13.3261 7 14.5975 7.52716 15.5352 8.46484C16.4728 9.40253 17 10.6739 17 12C17 13.3261 16.4728 14.5975 15.5352 15.5352C14.5975 16.4728 13.3261 17 12 17C10.6739 17 9.40253 16.4728 8.46484 15.5352C7.52716 14.5975 7 13.3261 7 12C7 10.6739 7.52716 9.40253 8.46484 8.46484C9.40253 7.52716 10.6739 7 12 7ZM12 9C11.2044 9 10.4415 9.3163 9.87891 9.87891C9.3163 10.4415 9 11.2044 9 12C9 12.7956 9.3163 13.5585 9.87891 14.1211C10.4415 14.6837 11.2044 15 12 15C12.7956 15 13.5585 14.6837 14.1211 14.1211C14.6837 13.5585 15 12.7956 15 12C15 11.2044 14.6837 10.4415 14.1211 9.87891C13.5585 9.3163 12.7956 9 12 9ZM17.25 5.5C17.5815 5.5 17.8994 5.63179 18.1338 5.86621C18.3682 6.10063 18.5 6.41848 18.5 6.75C18.5 7.08152 18.3682 7.39937 18.1338 7.63379C17.8994 7.86821 17.5815 8 17.25 8C16.9185 8 16.6006 7.86821 16.3662 7.63379C16.1318 7.39937 16 7.08152 16 6.75C16 6.41848 16.1318 6.10063 16.3662 5.86621C16.6006 5.63179 16.9185 5.5 17.25 5.5Z" fill="#909090"/>
-        </svg>
-    `;
-}
-
-document.querySelectorAll('.care-icon').forEach((element) => {
-    element.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+const carEIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_327_120)">
 <path d="M18.9999 16.8998C20.2151 16.6531 21.2952 15.9636 22.0306 14.9653C22.766 13.967 23.1043 12.731 22.9796 11.4973C22.855 10.2636 22.2765 9.12028 21.3563 8.28919C20.4361 7.45809 19.2399 6.99857 17.9999 6.99981H16.7399C16.4086 5.71713 15.764 4.5368 14.8638 3.5648C13.9637 2.59279 12.8363 1.85954 11.5828 1.43087C10.3292 1.00221 8.98891 0.891543 7.68207 1.10882C6.37523 1.32609 5.1428 1.86451 4.09544 2.67572C3.04808 3.48693 2.21856 4.54555 1.68137 5.75652C1.14418 6.9675 0.916124 8.29292 1.01769 9.6138C1.11925 10.9347 1.54725 12.2097 2.26326 13.3243C2.97926 14.4389 3.96087 15.3583 5.11993 15.9998" stroke="#5BA3F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M13 11L9 17H15L11 23" stroke="#5BA3F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -118,330 +74,332 @@ document.querySelectorAll('.care-icon').forEach((element) => {
 </svg>
 
 `;
-})
-
-document.querySelectorAll('span.min-icon').forEach((element) => {
-    element.innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 12H19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-    `;
-})
-
-document.querySelectorAll('span.plus-icon').forEach((element) => {
-    element.innerHTML = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 5V19" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5 12H19" stroke="#0F0F0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-    `;
-})
 
 
-document.querySelectorAll('span.hamburger-menu').forEach((element) => {
-    element.innerHTML = `
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3 12H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 6H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 18H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-`;
-}) 
+//Menu click
+document.querySelector('.default').style.backgroundColor = 'var(--primary-color)';
+document.querySelector('.default').style.boxShadow = 'var(--shadow-box)'
 
-document.querySelectorAll('span.close-menu-icon').forEach((element) => {
-    element.innerHTML = `
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5 12H19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12 5L19 12L12 19" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
 
-`;
-}) 
-
-//Dark mode
-let isDarkModeOn = false || JSON.parse(localStorage.getItem('isDarkModeOn'));
-const root = document.documentElement;
-if(document.querySelector('.js-dark-mode')){
-    document.querySelector('.js-dark-mode').addEventListener('click', () => {
-        if(!isDarkModeOn){
-            rootDarkMode();
-            isDarkModeOn = true;
-            localStorage.setItem('isDarkModeOn', JSON.stringify(true))
-        } else {
-            rootDefault();
-            isDarkModeOn = false;
-            localStorage.setItem('isDarkModeOn', JSON.stringify(false))
-        }
-    })
-}
-if(isDarkModeOn){
-    rootDarkMode();
-} else {
-    rootDefault();
-}
-function rootDarkMode(){
-    if(document.querySelector('.js-dark-mode')){
-        document.querySelector('.dark-mode-circle').style.left = '50%';
-    }
-    root.style.setProperty('--primary-color', '#2D2D2D')
-    root.style.setProperty('--secondary-color', '#1E1E1E')
-    root.style.setProperty('--font-color', '#F5F5F5')
-    root.style.setProperty('--hover-bg-efect', '#0A0A0A')
-}
-function rootDefault(){
-    if(document.querySelector('.js-dark-mode')){
-        document.querySelector('.dark-mode-circle').style.left = '0';
-    }
-    root.style.setProperty('--primary-color', '#FFFFFF')
-    root.style.setProperty('--secondary-color', '#F0F0F0')
-    root.style.setProperty('--font-color', '#0F0F0F')
-    root.style.setProperty('--hover-bg-efect', '#DCDCDC')
-}
-//Dark mode
-
-//Hover efect
-document.querySelectorAll('.js-lainnya-hover-efect').forEach((element) => {
-    element.addEventListener('mouseover', () => {
-        document.querySelector('.js-lainnya-text').classList.add('active')
-    })
-    element.addEventListener('mouseout', () => {
-        document.querySelector('.js-lainnya-text').classList.remove('active')
-    })
-})
-
-function borderCartFromButtonPaket(namaPaket){
-    if(document.querySelector(`.paket-harga-card.${namaPaket}`)){
-        document.querySelector(`.paket-harga-card.${namaPaket} button`).addEventListener('mouseover', () => {
-            document.querySelector(`.paket-harga-card.${namaPaket}`).style.border = `2px solid var(--primary-${namaPaket})`;
-        })
-        document.querySelector(`.paket-harga-card.${namaPaket} button`).addEventListener('mouseout', () => {
-            document.querySelector(`.paket-harga-card.${namaPaket}`).style.border = '2px solid rgba(0,0,0,0)';
-        })
-    }
-}
-borderCartFromButtonPaket('elite')
-borderCartFromButtonPaket('max')
-borderCartFromButtonPaket('basic')
-borderCartFromButtonPaket('care')
-//Hover efect
-
-//Header hide ketika scroll down
-let lastScrollTop = 0;
-let headerHide = false;
-const windowScroll = () => {
-    let scrollTop = window.scrollY || document.documentElement.scrollTop;
-    if (scrollTop > lastScrollTop + 5) {
-    if(!headerHide){
-        headerHide = true;
-        document.querySelector('header').style.transform = 'translateY(-90px)'
-        if(window.innerWidth <= 1100){
-            if(document.querySelector('.hero')){
-                document.querySelector('.hero').style.padding = '14px 24px'
-            }
-        }
-    }
-    } else if (scrollTop < lastScrollTop - 3 || scrollTop === 20) {
-    if(headerHide){
-        headerHide = false;
-        document.querySelector('header').style.transform = 'translateY(0px)';
-    } else if(scrollTop < 40){
-        if(window.innerWidth <= 550){
-            if(document.querySelector('.hero')){
-                document.querySelector('.hero').style.padding = `14px 24px 74px 24px`;
-            }
-        }
-            
-        }
-    }
-
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    };
-if(document.querySelector('header')){
-    window.addEventListener("scroll", windowScroll);
-}
-//Header hide ketika scroll down
-
-//Hero dot image
-let outHover = null;
-function showImgFromDotNav(dotId, translateX){
-    if(document.getElementById(`${dotId}`)){
-        const wrapperImg =  document.getElementById('wrapperHero');
-        const elementTarget = document.getElementById(`${dotId}`);
-        document.getElementById(`${dotId}`).addEventListener('mouseover', () => {
-            clearTimeout(outHover);
-            if(dotId === 'hero1'){
-                document.getElementById('hero1').style.opacity = '1';
-                document.getElementById('hero2').style.opacity = '0.5';
-                document.getElementById('hero3').style.opacity = '0.5';
-            } else if(dotId === 'hero2'){
-                document.getElementById('hero1').style.opacity = '0.5';
-                document.getElementById('hero2').style.opacity = '1';
-                document.getElementById('hero3').style.opacity = '0.5';
+const jsMenu = document.querySelectorAll('.js-menu')
+jsMenu.forEach(menu => {
+    menu.addEventListener('click', () => {
+        let dataId = menu.dataset.menu;
+        dataClickToSummonElement(dataId);
+        jsMenu.forEach((menu2) => {
+            if(menu2.dataset.menu === dataId){
+                menu2.style.backgroundColor = 'var(--primary-color)'
+                menu2.style.boxShadow = 'var(--shadow-box)'
             } else {
-                document.getElementById('hero1').style.opacity = '0.5';
-                document.getElementById('hero2').style.opacity = '0.5';
-                document.getElementById('hero3').style.opacity = '1';
+                menu2.style.backgroundColor = ''
+                menu2.style.boxShadow = ''
             }
-            document.getElementById('hero1').style.animation = 'none';
-            document.getElementById('hero2').style.animation = 'none';
-            document.getElementById('hero3').style.animation = 'none';
-            wrapperImg.style.animation = 'none';
-            wrapperImg.style.transform = `translateX(${translateX}%)`
         })
-        document.getElementById(`${dotId}`).addEventListener('mouseout', () => {
-            if(outHover){
-                clearTimeout(outHover);
-            }
-            outHover = setTimeout(() => {
-                elementTarget.style.opacity = '0.5';
-                document.getElementById('hero1').style.animation = '';
-                document.getElementById('hero2').style.animation = '';
-                document.getElementById('hero3').style.animation = '';
-                wrapperImg.style.animation = '';
-            },5000)
-        })
+    })
+})
+
+function dataClickToSummonElement(data){
+    if(data === '1'){
+        summonGarasi();
+    } else if(data === '2'){
+        summonPesanan();
     }
 }
-showImgFromDotNav('hero2', -100)
-showImgFromDotNav('hero1', 0)
-showImgFromDotNav('hero3', -200)
-//Hero dot image
 
-//Show hide menu
-if(document.querySelector('.js-hamburger-icon')){
-    localStorage.removeItem('nomor_garasi');
-    localStorage.removeItem('otp');
-    localStorage.removeItem('data-telepon');
-    localStorage.removeItem('nomor_telepon')
-    localStorage.removeItem('idPaket')
-    localStorage.removeItem('careQty')
-    localStorage.removeItem('nomor_garasi')
-    document.querySelector('.js-hamburger-icon').addEventListener('click', () => {
-        window.removeEventListener("scroll", windowScroll);
-        if(document.querySelector('.close-menu')){
-            document.querySelector('.js-menu-content').classList.remove('close-menu');
+function summonGarasi(filter){
+    saveDetailSewa()
+    fetch("../php/get-all-garasi.php")
+    .then(response => response.json())
+    .then(data => {
+        if(filter === 'tersedia'){
+            data = data.filter(garasi => garasi.id_sewa === '0')
+        } else if(filter === 'terisi'){
+            data = data.filter(garasi => garasi.id_sewa !== '0');
         }
-        document.querySelector('.js-menu-content').classList.add('show-menu');
-        if(window.innerHeight >= 800){
-            document.body.style.overflow = 'hidden'
-            document.addEventListener('touchmove', preventDefault, { passive: false });
-        }
-    })
-    document.querySelector('.js-close-menu').addEventListener('click', () => {
-        window.addEventListener("scroll", windowScroll);
-        document.querySelector('.js-menu-content').classList.remove('show-menu');
-        document.querySelector('.js-menu-content').classList.add('close-menu');
-        if(window.innerHeight >= 800){
-            document.body.style.overflow = 'auto';
-            document.removeEventListener('touchmove', preventDefault);
-        }
-    })
-}
-function preventDefault(e) {
-  e.preventDefault();
-}
-//Show hide menu
+          contentHTML = `<div class="content-top">
+                  <h1>Garasi</h1>
+                  <div>
+                      <div class="jumlah-garasi">
+                          <p class="text">Jumlah</p>
+                          <p class="angka">${data.length}</p>
+                      </div>
+                      <div class="filter-garasi filter-hover">
+                          <div>
+                              <span class="filter-icon js-filter">${filterIcon}</span>
+                              <p>Filter</p>
+                          </div>
+                          <div class="menu-filter">
+                              <p class="js-filter-terisi">Terisi</p>
+                              <p class="js-filter-tersedia">Kosong</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="content-bottom">
+                  <div class="garasi-atribut">
+                      <h1 class="start">No Garasi</h1>
+                      <h1 class="middle nama">Pengguna</h1>
+                      <h1 class="middle">Kendaraan</h1>
+                      <h1 class="end">Status</h1>
+                  </div>
+                  <div class="all-garasi-content">
+                      
+                  </div>
+              </div>`
+            document.querySelector('.js-content-admin').innerHTML = contentHTML;
+            document.querySelector('.js-filter-tersedia').addEventListener('click', () => {
+                summonGarasi('tersedia')
+            })
+            document.querySelector('.js-filter-terisi').addEventListener('click', () => {
+                summonGarasi('terisi')
+            })
+            document.querySelector('.js-filter').addEventListener('click', () => {
+                summonGarasi()
+            })
+        let garasiContent = '';
+        data.forEach((garasiEach) => {
+            if(garasiEach.id_sewa === '0'){
+                garasiContent += `<div class="garasi">
+                          <div class="start list">
+                              <p>#${garasiEach.nomor_garasi}</p>
+                              <img src="../image/${garasiEach.url}" alt="">
+                          </div>
+                          <div class="middle nama list">
+                              <div class="wrap-nama">
+                                  <p>-</p>
+                              </div>
+                          </div>
+                          <div class="middle list">
+                              <p>-</p>
+                          </div>
+                          <div class="end list">
+                              <p>Tersedia</p>
+                          </div>
+                      </div>
+                `
+            } else {
+                let dataSewa = JSON.parse(localStorage.getItem('detailSewa'))
+                dataSewa.forEach((eachDetailSewa) => {
+                    let CarE = '';
+                    if(JSON.parse(garasiEach.id_sewa) === JSON.parse(eachDetailSewa.id_sewa)){
+                        if(eachDetailSewa.penawaran !== 0){
+                            CarE = `<span class="care-icon">${carEIcon}</span>`
+                        } else {
+                            CarE = '';
+                        }
+                        garasiContent += `<div class="garasi">
+                            <div class="start list">
+                                <p>#${eachDetailSewa.nomor_garasi}</p>
+                                <img src="../image/${eachDetailSewa.url}" alt="">
+                            </div>
+                            <div class="middle nama list">
+                                <div class="wrap-nama">
+                                    <p>${eachDetailSewa.nama_panggilan}</p>
+                                </div>
+                                <div>
+                                    <span class="icon-paket ${idToNamaPaket(eachDetailSewa.id_paket)}">${iconPaket}</span>
+                                    ${CarE}
+                                </div>
+                            </div>
+                            <div class="middle list">
+                                <p>${eachDetailSewa.nama_mobil}</p>
+                            </div>
+                            <div class="end list">
+                                <button class="bg-${idToNamaPaket(eachDetailSewa.id_paket)}">${idToDurasiPaket(eachDetailSewa.id_paket)} hari</button>
+                            </div>
+                        </div>`
+                    }
 
-//Sewa action
-function directToMenu(element, id){
-    document.querySelector(`.${element}`).addEventListener('click', () => {
-        if(window.innerWidth <= 1100){
-            document.querySelector('.js-close-menu').click();
-            if(window.innerWidth <= 550){
-                document.querySelector('.hero').style.padding = '14px 24px'
+                })
             }
-        } else {
-            if(window.innerWidth <= 550){
-                document.querySelector('.hero').style.padding = '14px 24px'
-            }
-        }
-        setTimeout(() => {
-            document.getElementById(`${id}`).scrollIntoView({
-                behavior: 'smooth',
-            });
-            if(localStorage.getItem('koleksiToMenu')){
-                localStorage.removeItem('koleksiToMenu');
-            }
-        },200)
-    })
-}
-function koleksiToMenu(element){
-    document.querySelector(`.${element}-koleksi`).addEventListener('click', () => {
-        localStorage.setItem('koleksiToMenu', element)
-        window.location.href = 'index.html';
-    })
-}
-if(document.querySelector('section.koleksi')){
-    koleksiToMenu('js-tentang-kami-direct', 'tentang-kami')
-    koleksiToMenu('js-harga-direct', 'harga');
-    koleksiToMenu('js-sewa-action-button', 'harga');
-}
-
-if(document.querySelector('.js-sewa-action-button')){
-    directToMenu('js-sewa-action-button', 'harga');
-    directToMenu('js-tentang-kami-direct', 'tentang-kami');
-    directToMenu('js-harga-direct', 'harga');
-    let menuTarget = '' || localStorage.getItem('koleksiToMenu')
-    if(menuTarget){
-        document.querySelector(`.${menuTarget}`).click();
-    }
-}
-if(document.querySelector('header')){
-    document.querySelector('.js-koleksi-direct').addEventListener('click', () => {
-        if(window.innerWidth <= 1100){
-            document.querySelector('.js-close-menu').click();
-            if(!document.querySelector('section.koleksi')){
-                setTimeout(() => {
-                    window.location.href = 'koleksi.html';
-                },700)
-            }
-        } else {
-            if(!document.querySelector('section.koleksi')){
-                window.location.href = 'koleksi.html';
-            }
-        }
-        
-    })
-}
-
-if(document.querySelector('span.segaragarage-icon')){
-    if(document.querySelector('header span.segaragarage-icon')){
-        document.querySelector('span.segaragarage-icon svg').addEventListener('click', () => {
-            window.location.href = 'index.html';
         })
-        document.querySelector('header span.segaragarage-icon svg').style.cursor = 'pointer';
+        document.querySelector('.all-garasi-content').innerHTML = garasiContent;
+    })
+      .catch(error => {
+        console.error("Gagal mengambil data user:", error);
+      });
+}
+
+function saveDetailSewa(){
+    fetch('php/select-data-sewa.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+    })
+    })
+    .then(res => res.json())
+    .then(data => {
+        localStorage.setItem('detailSewa', JSON.stringify(data));
+    })
+    .catch(err => console.error('Error:', err));
+}
+
+function idToNamaPaket(id_paket){
+    if(id_paket === 90001){
+        return 'basic'
+    } else if(id_paket === 90002){
+        return 'elite'
     } else {
-        document.querySelectorAll('span.segaragarage-icon svg').forEach((element) => {
-            element.addEventListener('click', () => {
-                window.location.href = '../index.html';
+        return 'max'
+    }
+}
+
+function idToDurasiPaket(id_paket){
+    if(id_paket === 90001){
+        return '30'
+    } else if(id_paket === 90002){
+        return '180'
+    } else {
+        return '365'
+    }
+}
+
+
+function summonPesanan(){
+    fetch("../php/get-all-riwayat.php")
+      .then(response => response.json())
+      .then(data => {
+        let dataSewa = data.filter(each => each.status === 'menunggu');
+        let topHTML = `<div class="content-top">
+            <h1>Pesanan</h1>
+            <div>
+                <div class="jumlah-garasi">
+                    <p class="text">Jumlah</p>
+                    <p class="angka">${dataSewa.length}</p>
+                </div>
+                <div class="filter-garasi filter-hover">
+                    <div>
+                        <span class="search-icon js-search"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.9999 21.0004L16.6499 16.6504" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</span>
+                        <input class="js-input-id-sewa" type="text" placeholder="Cari nomor" name="nomor_pesanan" id="nomorPesanan">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-bottom">
+            <div class="garasi-atribut pesanan">
+                <h1 class="start">Nomor</h1>
+                <h1 class="middle nama">Telepon</h1>
+                <h1 class="middle">Garasi</h1>
+                <h1 class="middle">Paket</h1>
+                <h1 class="middle">Status</h1>
+                <h1 class="end">Aksi</h1>
+            </div>
+            <div class="all-pesanan-contents">
+                
+                
+            </div>
+        </div>`
+        document.querySelector('.js-content-admin').innerHTML = topHTML;
+        summonPesanan2();
+        document.getElementById('nomorPesanan').addEventListener('keydown', () => {
+            summonPesanan2(`${document.querySelector('.js-input-id-sewa').value}`)
+
+        })
+
+      })
+      .catch(error => {
+        console.error("Gagal mengambil data user:", error);
+      });
+}
+function summonPesanan2(id_sewa){
+    fetch("../php/get-all-riwayat.php")
+      .then(response => response.json())
+      .then(data => {
+        let dataSewa = data.filter(each => each.status === 'menunggu');
+        let contentHTML = '';
+        let carE = '';
+        if(id_sewa){
+            dataSewa = dataSewa.filter(each => each.id_sewa === id_sewa);
+        }
+        if(dataSewa.length === 0){
+            dataSewa = data.filter(each => each.status === 'menunggu');
+        }
+        dataSewa.forEach((each) => {
+            if(each.penawaran === '0'){
+                carE = ''
+            } else {
+                carE = `<span class="care-icon">${carEIcon}</span>`
+            }
+            contentHTML += `<div class="all-pesanan-content pesanan">
+                    <h1 class="start pesanan">#${each.id_sewa}</h1>
+                    <h1 class="middle nama pesanan">${each.nomor_telepon}</h1>
+                    <h1 class="middle pesanan">${each.nomor_garasi}</h1>
+                    <div class="middle pesanan"> 
+                        <span class="icon-paket ${idToNamaPaket(JSON.parse(each.id_paket))}">${iconPaket}</span>
+                        ${carE}
+                    </div>
+                    <h1 class="middle pesanan status pending">Pending</h1>
+                    <div class="end pesanan aksi-menu">
+                        <span class="more-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <div class="action-more">
+                            <h1 class="js-batal" data-sewa="${each.id_sewa}">Batal</h1>
+                            <h1 class="js-dibayar" data-sewa="${each.id_sewa}">Dibayar</h1>
+                        </div>
+                    </div>
+                </div>
+            `
+        })
+        document.querySelector('.all-pesanan-contents').innerHTML = contentHTML
+        document.querySelectorAll('.js-batal').forEach((el) => {
+            el.addEventListener('click', () => {
+                const dataId = el.dataset.sewa;
+                document.querySelector('.alert').innerHTML = `<div class="alert-batal">
+                    <div>
+                        <h1>Anda yakin ingin membatalkan pesanan ini?</h1>
+                        <button>Batalkan</button>
+                    </div>
+                </div>`
+                console.log(dataId)
+                document.querySelector('.alert-batal').addEventListener('click', () => {
+                    document.querySelector('.alert').innerHTML = '';
+                })
+
             })
         })
-    }
-}
-//Sewa action
 
-//Direct sosial media
-function directToLink(element, link){
-    document.querySelector(`.${element}`).addEventListener('click', ()=> {
-        window.open(`${link}`, "_blank");
-    })
+        document.querySelectorAll('.js-dibayar').forEach((each) => {
+            each.addEventListener('click', () => {
+                document.querySelector('.alert').innerHTML = `
+                    <div class="alert-dibayar">
+                    <div class="div0">
+                        <div class="div1">
+                            <h1>Unggah gambar kendaraan:</h1>
+                            <div>
+                                <input type="file" name="" id="" required>
+                            </div>
+                        </div>
+                        <div class="div1">
+                            <h1>Tanggal mulai sewa:</h1>
+                            <div>
+                                <input type="date" required>
+                            </div>
+                        </div>
+                        <p>Garasi akan diisi dengan pesanan ini setelah kamu menekan tombol “Aktifkan”</p>
+                        <button>Aktifkan</button>
+                    </div>
+                </div>
+                `
+                document.querySelector('.alert-dibayar').addEventListener('click', () => {
+                    document.querySelector('.alert').innerHTML = '';
+                })
+            })
+        })
+      })
+      .catch(error => {
+        console.error("Gagal mengambil data user:", error);
+      });
 }
-if(document.querySelector('.js-maps-direct')){
-    directToLink('js-maps-direct', 'https://maps.app.goo.gl/V71BnPcYBrtGK92cA')
-}
-if(document.querySelector('header')){
-    directToLink('js-yt-direct', 'https://www.youtube.com/@SegaraArt')
-    directToLink('js-ig-direct', 'https://www.instagram.com/segaraart_5386/')
-    directToLink('js-fb-direct', 'https://www.facebook.com/p/Gus-Segara-100010291607079/?wtsid=rdr_0ezyFiOpm7D1DplmS#')
-}
-//Direct sosial media
+//Menu click
 
-//Logo di title
-const link = document.createElement("link");
-link.rel = "icon";
-link.type = "image/svg+xml";
-const svgData = "data:image/svg+xml," + encodeURIComponent(logoSegaragarage);
-link.href = svgData;
-document.head.appendChild(link);
-//Logo di title

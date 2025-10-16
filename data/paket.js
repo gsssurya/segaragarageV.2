@@ -1,20 +1,23 @@
-export const paketSewa = [
-    {
-        id_paket: '90001',
-        nama_paket: 'paket basic',
-        durasi: 30,
-        harga: 250000
-    },
-    {
-        id_paket: '90002',
-        nama_paket: 'paket elite',
-        durasi: 180,
-        harga: 1250000
-    },
-    {
-        id_paket: '90003',
-        nama_paket: 'paket max',
-        durasi: 360,
-        harga: 2250000
-    }
-]
+export let paketSewa = '' || JSON.parse(localStorage.getItem('paket'));
+
+if(document.querySelector('.pilih-garasi')){
+    fetch("../php/get-all-paket.php")
+      .then(response => response.json())
+      .then(data => {
+        const paket = data;
+        localStorage.setItem('paket', JSON.stringify(paket));
+      })
+      .catch(error => {
+        console.error("Gagal mengambil data user:", error);
+      });
+} else {
+    fetch("./php/get-all-paket.php")
+      .then(response => response.json())
+      .then(data => {
+        const paket = data;
+        localStorage.setItem('paket', JSON.stringify(paket));
+      })
+      .catch(error => {
+        console.error("Gagal mengambil data user:", error);
+      });
+}

@@ -148,7 +148,7 @@ body{
     align-items: center;
     cursor: pointer;
 }
-.pilih-garasi .denah-container .garasi-right .box-garasi:hover{
+.pilih-garasi .denah-container .garasi-right .tidak-tersedia:hover{
     scale: 0.95;
 }
 .pilih-garasi .denah-container .garasi-right .box-garasi:hover .info-pengguna-container{
@@ -186,7 +186,8 @@ body{
     box-shadow: var(--shadow-box);
     z-index: 100;
     padding: 21px;
-    align-items: start;
+    align-items: center;
+    height: fit-content;
     gap: 21px;
 }
 .info-pengguna-container .informasi-pengguna img{
@@ -592,7 +593,7 @@ input[type=number] {
 .tambah-kurang-care-box span:active{
     background-color: var(--secondary-color);
 }
-span.plus-icon path, span.trash-icon path{
+span.plus-icon path, span.min-icon path{
     stroke: var(--font-color);
 }
 /*Konfirmasi style*/
@@ -632,7 +633,86 @@ span.plus-icon path, span.trash-icon path{
     cursor: pointer;
     text-decoration: underline;
 }
+.js-jumlah-care{
+    user-select: none;
+}
 /*Otp style*/
+
+
+/*PopUp Konfirmasi*/
+.popup-container{
+    position: fixed;
+    top: -90px;
+    left: 0;
+    right: 0;
+    bottom: -90px;
+    background-color: rgba(0,0,0,0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pesanan-berhasil{
+    transform: translateY(-100vh);
+    animation: popUpIn forwards 0.75s 0.15s ease;
+}
+.popup-content{
+    padding: 48px;
+    border-radius: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 37px;
+    margin: 48px;
+    background-color: var(--primary-color);
+    align-items: center;
+    max-width: calc(392px - 96px);
+    text-align: center;
+    box-shadow: var(--shadow-box);
+}
+span.check-icon{
+    height: 82px;
+    width: 100px;
+}
+.popup-content div{
+    display: flex;
+    gap: 22px;
+    flex-direction: column;
+    h1{
+        font-size: 37px;
+        font-weight: 700;
+    }
+    p{
+        font-size: 13px;
+        font-weight: 400;
+    }
+}
+.popup-container button{
+    padding: 10px 0;
+    border-radius: 12px;
+    width: 100%;
+    background-color: var(--font-color);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--primary-color);
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.15s;
+}
+.popup-container button:hover{
+    background-color: var(--dark-active-efect);
+}
+.popup-container button:active{
+    background-color: var(--dark-hover-efect);
+}
+@keyframes popUpIn{
+    0%{
+        transform: translateY(-100vh);
+    }100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/*PopUp Konfirmasi*/
+
 @media (max-width: 550px){
     .pilih-garasi{
         padding: 14px 0;
@@ -725,12 +805,38 @@ span.plus-icon path, span.trash-icon path{
     .pilih-garasi span svg{
         scale: 0.7;
     }
+    .pilih-garasi.denah span svg{
+        scale: 1;
+    }
     .pilih-garasi .segaragarage-icon svg{
         scale: 1;
     }
 }
 @media (max-width: 955px){
-
+    .popup-content{
+        margin: 24px;
+        padding: 24px;
+        gap: 24px;
+        border-radius: 36px;
+        max-width: calc(300px - 48px);
+    }
+    .popup-content div{
+        gap: 10px;
+    }
+    .popup-container button{
+        font-size: 16px;
+    }
+    .popup-content div {
+    p{
+        font-size: 11px;
+    }}
+    .popup-content div {
+    h1{
+        font-size: 24px;
+    }}
+    span.check-icon{
+        scale: 0.8;
+    }
     .konfirmasi-paket-container, .detail-konfirmasi-container{
         flex-direction: column;
     }

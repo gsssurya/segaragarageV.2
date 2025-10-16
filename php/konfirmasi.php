@@ -1,7 +1,7 @@
 <?php
 $token = 'wW1FJntcLguzFwXWFWk7';
 $target = $_POST['telepon'];
-$otp = $_POST['otp'];
+$pesan = $_POST['pesan'];
 
 $curl = curl_init();
 
@@ -16,7 +16,7 @@ curl_setopt_array($curl, array(
   CURLOPT_CUSTOMREQUEST => 'POST',
   CURLOPT_POSTFIELDS => array(
 'target' => $target,
-'message' => "[SegaraGarage]\n\nKode OTP Anda adalah: $otp\n\nJangan bagikan kode ini kepada siapa pun demi keamanan akun Anda.",
+'message' => $pesan,
 ),
   CURLOPT_HTTPHEADER => array(
     "Authorization: $token"

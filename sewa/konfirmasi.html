@@ -20,59 +20,24 @@
             <span class="segaragarage-icon"></span>
             <h1>Paket garasi Anda.</h1>
             <div class="konfirmasi-paket-container">
-                <img src="../image/IMG_2358.jpg" alt="">
-                <div class="konfirmasi-detail-box">
-                    <div class="konfirmasi-top">
-                        <div class="left">
-                            <h1 class="nomor-garasi">Garasi 1</h1>
-                            <h1 class="paket-sewa elite">Paket ELITE 6 bulan</h1>
-                            <div class="care-container">
-                                <h1 class="care-title">CarE</h1>
-                                <div class="tambah-kurang-container">
-                                    <div class="tambah-kurang-care-box">
-                                        <span class="trash-icon"></span>
-                                        <p class="jumlah-care secondary">1</p>
-                                        <span class="plus-icon"></span>
-                                    </div>
-                                    <p class="secondary">Minggu</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="right">
-                            <h1 class="nama-pengguna">Gus Surya</h1>
-                            <div class="paket-sewa-harga">
-                                <P class="secondary">Rp</P>
-                                <p class="secondary">1.500.000</p>
-                            </div>
-                            <div>
-                                <p class="secondary">Rp</p>
-                                <p class="secondary">25.000</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="konfirmasi-bottom">
-                        <h1>Total</h1>
-                        <div class="harga-total-box">
-                            <p class="secondary">Rp</p>
-                            <p class="secondary">1.525.000</p>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="detail-konfirmasi-container">
+            <form class="detail-konfirmasi-container">
                 <div class="inpt-nama-kendaraan-box">
-                    <input type="text" placeholder="Porche" name="kendaraan" id="kendaraan">
-                    <p class="secondary">Harap isi nama kendaraan Anda!</p>
+                    <input class="input-nama-mobil" type="text" placeholder="Porche" name="kendaraan" id="kendaraan" required>
+                    <p class="secondary js-nama-mobil-alert">Harap isi nama kendaraan Anda!</p>
                 </div>
                 <div class="konfirmasi-button-box">
                     <p class="secondary">
                         Setelah memilih paket sewa, silakan lakukan konfirmasi agar kami dapat mengarahkan Anda ke WhatsApp untuk proses pembayaran dan informasi lebih lanjut.
                     </p>
-                    <button>Konfirmasi</button>
-                </div>
-            </div>
+                    <button type="submit" class="js-konfirmasi-button">Konfirmasi</button>
+                </div> 
+            </form>
         </div>
     </section>
+    <div class="popup-berhasil">
+        
+    </div>
     <script src="../script.js" type="module"></script>
 </body>
 </html>

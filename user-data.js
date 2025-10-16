@@ -40,7 +40,9 @@ if(document.querySelector('.js-paket-harga-button')){
 
 if(document.querySelector('.js-lanjutkan-denah')){
 
-    goToDenah();
+    if(!dataSewa.id_paket){
+        window.location.href = '../index.html';
+    }
 
     document.body.addEventListener("keydown", (event) => {
         if(event.key === 'Enter'){
@@ -50,85 +52,102 @@ if(document.querySelector('.js-lanjutkan-denah')){
 
     let nomorTeleponTidakDitemukan = false || localStorage.getItem('data-telepon')
 
-    if(!nomorTeleponTidakDitemukan){
-
-        //Mengubah type lanjutkan button
-        document.querySelector('.js-nomor-telepon').addEventListener('input', () => {
-            if(document.querySelector('.js-nomor-telepon').value.trim() === ''){
-                document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
+    if(dataSewa.nomor_telepon){
+        document.querySelector('.js-nomor-telepon').value = dataSewa.nomor_telepon.slice(1);
+        document.querySelector('.js-lanjutkan-denah').type = 'button';
+        document.querySelector('.js-lanjutkan-denah').addEventListener('click', () => {
+            if(`0${document.querySelector('.js-nomor-telepon').value}` === dataSewa.nomor_telepon){
+                window.location.href = 'denah.html';
             } else {
-                document.querySelector('.js-lanjutkan-denah').type = 'button';
+                localStorage.removeItem('teleponValid');
+                localStorage.removeItem('nama_mobil');
+                checkNumberTelepon();
             }
         })
-        //Mengubah type lanjutkan button
-
-        //Button lanjutkan ke OTP
-        document.querySelector('.js-lanjutkan-denah').addEventListener('click', () => {
-            checkNumberTelepon();
-        })
-        //Button lanjutkan ke OTP
-
     } else {
-        
-        let alertTime;
-        document.querySelector('.js-nomor-telepon').type = 'text';
-        document.querySelector('.js-nomor-telepon').value = formatDenganStrip(hilangkanNolTelepon());
-        console.log('data kosong')
-        document.querySelector('.js-nomor-telepon').style.pointerEvents = 'none';
-        document.querySelectorAll('.register input').forEach((input) => {
-            input.required = true;
-        })
-        document.querySelectorAll('.register').forEach((element) => {
-            element.style.display = 'flex';
-        })
-        document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
-        document.querySelector('.js-form-keterangan').innerHTML = 'Dengan mengisi formulir ini, saya setuju data yang diberikan dipakai untuk <i>pengelolaan</i> penyewaan garasi.'
-        const inputs = document.querySelectorAll("input");
-        inputs.forEach((element, index) => {
-            element.addEventListener('keydown', () => {
-                if(inputs[3].value && inputs[0].value && inputs[1].value && inputs[2].value){
-                   document.querySelector('.js-lanjutkan-denah').type = 'button';
-                } else {
+        if(!nomorTeleponTidakDitemukan){
+    
+            //Mengubah type lanjutkan button
+            document.querySelector('.js-nomor-telepon').addEventListener('input', () => {
+                if(document.querySelector('.js-nomor-telepon').value.trim() === ''){
                     document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
+                } else {
+                    document.querySelector('.js-lanjutkan-denah').type = 'button';
                 }
             })
-        })
-        document.querySelector('.js-lanjutkan-denah').addEventListener('click', () =>{
-            goToDenah();
-            if(inputs[3].value && inputs[0].value && inputs[1].value && inputs[2].value){
-
-                //Email valid checker
-                const emailElement = document.getElementById('email');
-                 if(getDomain(emailElement.value) === '@gmail.com'){
-                    localStorage.setItem('teleponValid', localStorage.getItem('nomor_telepon'))
-                    localStorage.removeItem('nomor_telepon');
-                    localStorage.removeItem('data-telepon')
-                    localStorage.removeItem('detik');
-                    const dataUser = {
-                        nomor_telepon: localStorage.getItem('teleponValid'),
-                        nama_panggilan: document.getElementById('nama').value,
-                        email: emailElement.value,
-                        alamat: document.getElementById('alamat').value
+            //Mengubah type lanjutkan button
+    
+            //Button lanjutkan ke OTP
+            document.querySelector('.js-lanjutkan-denah').addEventListener('click', () => {
+                checkNumberTelepon();
+            })
+            //Button lanjutkan ke OTP
+    
+        } else {
+            
+            let alertTime;
+            document.querySelector('.js-nomor-telepon').type = 'text';
+            document.querySelector('.js-nomor-telepon').value = formatDenganStrip(hilangkanNolTelepon());
+            console.log('data kosong')
+            document.querySelector('.js-nomor-telepon').style.pointerEvents = 'none';
+            document.querySelectorAll('.register input').forEach((input) => {
+                input.required = true;
+            })
+            document.querySelectorAll('.register').forEach((element) => {
+                element.style.display = 'flex';
+            })
+            document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
+            document.querySelector('.js-form-keterangan').innerHTML = 'Dengan mengisi formulir ini, saya setuju data yang diberikan dipakai untuk <i>pengelolaan</i> penyewaan garasi.'
+            const inputs = document.querySelectorAll("input");
+            inputs.forEach((element, index) => {
+                element.addEventListener('keydown', () => {
+                    if(inputs[3].value && inputs[0].value && inputs[1].value && inputs[2].value){
+                       document.querySelector('.js-lanjutkan-denah').type = 'button';
+                    } else {
+                        document.querySelector('.js-lanjutkan-denah').type = 'sumbit';
                     }
-                    exportNewUser(dataUser);
-                    console.log(dataUser)
-                    setTimeout(() => {
-                        window.location.href = 'denah.html'
-                    }, 500)
-                 } else {
-                    document.querySelector('.js-email-alert').innerHTML = 'Email tidak valid (contoh@gmail.com)'
-                    document.querySelector('.js-email-alert').style.color = 'red';
-                    clearTimeout(alertTime);
-                    alertTime = setTimeout(() => {
-                        document.querySelector('.js-email-alert').innerHTML = 'Nomor telepon';
-                        document.querySelector('.js-email-alert').style.color = '';
-                        alertTime = null;
-                    }, 5000)
-                 }
-                //Email valid checker
-            }
-        })
+                })
+            })
+            document.querySelector('.js-lanjutkan-denah').addEventListener('click', () =>{
+                goToDenah();
+                if(inputs[3].value && inputs[0].value && inputs[1].value && inputs[2].value){
+    
+                    //Email valid checker
+                    const emailElement = document.getElementById('email');
+                     if(getDomain(emailElement.value) === '@gmail.com'){
+                        localStorage.setItem('teleponValid', localStorage.getItem('nomor_telepon'))
+                        localStorage.removeItem('nomor_telepon');
+                        localStorage.removeItem('data-telepon')
+                        localStorage.removeItem('detik');
+                        const dataUser = {
+                            nomor_telepon: localStorage.getItem('teleponValid'),
+                            nama_panggilan: document.getElementById('nama').value,
+                            email: emailElement.value,
+                            alamat: document.getElementById('alamat').value
+                        }
+                        exportNewUser(dataUser);
+                        console.log(dataUser)
+                        setTimeout(() => {
+                            window.location.href = 'denah.html'
+                        }, 500)
+                     } else {
+                        document.querySelector('.js-email-alert').innerHTML = 'Email tidak valid (contoh@gmail.com)'
+                        document.querySelector('.js-email-alert').style.color = 'red';
+                        clearTimeout(alertTime);
+                        alertTime = setTimeout(() => {
+                            document.querySelector('.js-email-alert').innerHTML = 'Nomor telepon';
+                            document.querySelector('.js-email-alert').style.color = '';
+                            alertTime = null;
+                        }, 5000)
+                     }
+                    //Email valid checker
+                }
+            })
+        }
     }
+
+   
+
 }
 
 function checkNumberTelepon(){
@@ -167,5 +186,3 @@ export function goToDenah(){
         localStorage.removeItem('otp');
     }
 }
-
-console.log(dataSewa)
